@@ -1,12 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../models/item_model.dart';
 
 class ItemsRepository {
   Stream<List<ItemModel>> getItemsStream() {
+    final userId = FirebaseAuth.instance.currentUser?.uid;
     return FirebaseFirestore.instance
         .collection('users')
-        .doc('2CEzxyKK81RsNmSCFXKw0Tf17Vk2')
+        .doc(userId)
         .collection('notes')
         .snapshots()
         .map((querySnapshot) {
@@ -20,18 +22,20 @@ class ItemsRepository {
   }
 
   Future<void> delete({required String id}) async {
+    final userId = FirebaseAuth.instance.currentUser?.uid;
     await FirebaseFirestore.instance
         .collection('users')
-        .doc('2CEzxyKK81RsNmSCFXKw0Tf17Vk2')
+        .doc(userId)
         .collection('notes')
         .doc(id)
         .delete();
   }
 
   Future<void> add({required String text}) async {
-   await FirebaseFirestore.instance
+    final userId = FirebaseAuth.instance.currentUser?.uid;
+    await FirebaseFirestore.instance
         .collection('users')
-        .doc('2CEzxyKK81RsNmSCFXKw0Tf17Vk2')
+        .doc(userId)
         .collection('notes')
         .add(
           ({
