@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:post_it/pages/login/cubit/login_cubit.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -30,7 +31,7 @@ class LoginPage extends StatelessWidget {
             child: Center(
               child: TextButton(
                 onPressed: () async {
-                  await FirebaseAuth.instance.signInAnonymously();
+                  context.read<LoginCubit>().signIn();
                 },
                 child: const AutoSizeText(
                   maxLines: 3,
