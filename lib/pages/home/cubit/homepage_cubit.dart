@@ -1,49 +1,43 @@
 import 'dart:async';
-
 import 'package:bloc/bloc.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:meta/meta.dart';
-
+import 'package:post_it/models/item_model.dart';
+import '../../../repositories/items_repository.dart';
 part 'homepage_state.dart';
 
 class HomepageCubit extends Cubit<HomepageState> {
-  HomepageCubit()
+  HomepageCubit(this._itemsRepository)
       : super(
           const HomepageState(
-            documents: [],
+            items: [],
             errorMessage: '',
             isLoading: false,
           ),
         );
 
+  final ItemsRepository _itemsRepository;
+
   StreamSubscription? _streamSubscription;
 
   Future<void> add(String text) async {
-    FirebaseFirestore.instance.collection('notes').add(
-          ({
-            'note': text,
-          }),
-        );
+    await _itemsRepository.add(text: text);
   }
 
   Future<void> delete(String id) async {
-    FirebaseFirestore.instance.collection('notes').doc(id).delete();
+    await _itemsRepository.delete(id: id);
   }
 
   Future<void> start() async {
     emit(const HomepageState(
-      documents: [],
+      items: [],
       errorMessage: '',
       isLoading: true,
     ));
 
-    _streamSubscription = FirebaseFirestore.instance
-        .collection('notes')
-        .snapshots()
-        .listen((data) {
+    _streamSubscription = _itemsRepository.getItemsStream().listen((items) {
       emit(
         HomepageState(
-          documents: data.docs,
+          items: items,
           errorMessage: '',
           isLoading: false,
         ),
@@ -52,7 +46,7 @@ class HomepageCubit extends Cubit<HomepageState> {
       ..onError((error) {
         emit(
           HomepageState(
-            documents: const [],
+            items: const [],
             errorMessage: error.toString(),
             isLoading: false,
           ),

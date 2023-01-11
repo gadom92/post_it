@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:post_it/pages/home/cubit/homepage_cubit.dart';
 import 'package:post_it/pages/login/cubit/login_cubit.dart';
 import 'package:post_it/pages/login/root.dart';
+import 'package:post_it/repositories/items_repository.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -22,19 +23,16 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => HomepageCubit()..start(),
+          create: (context) => HomepageCubit(ItemsRepository())..start(),
         ),
         BlocProvider(
           create: (context) => LoginCubit()..start(),
         ),
       ],
-      child: MaterialApp(
+      child: const MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home: const RootPage(),
+        title: 'Post It',
+        home: RootPage(),
       ),
     );
   }

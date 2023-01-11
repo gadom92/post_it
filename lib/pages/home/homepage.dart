@@ -13,83 +13,110 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomepageCubit, HomepageState>(builder: (context, state) {
-        final documents = state.documents;
-        if (state.errorMessage.isNotEmpty) {
-    return const Center(child: Text('Coś poszło nie tak'));
-        }
-
-        if (state.isLoading == true) {
-    return const Center(child: CircularProgressIndicator());
-        }
-        return Scaffold(
-    floatingActionButton: FloatingActionButton(
-      backgroundColor: Colors.brown[400],
-      onPressed: () {
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            backgroundColor: Colors.yellow[200],
-            title: const Text(
-              'Dodaj notatkę',
-              style: TextStyle(color: Colors.black),
+      final itemModels = state.items;
+      if (state.errorMessage.isNotEmpty) {
+        return Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              fit: BoxFit.fill,
+              image: AssetImage('assets/images/background.jpg'),
             ),
-            content: TextField(
-              controller: controller,
-            ),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text(
-                  'Anuluj',
-                  style: TextStyle(color: Colors.black),
+          ),
+          child: Center(
+            child: Container(
+              margin: const EdgeInsets.all(100),
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(
+                    'assets/images/post.jpg',
+                  ),
                 ),
               ),
-              TextButton(
-                onPressed: () {
-                  context.read<HomepageCubit>().add(controller.text);
-                  Navigator.of(context).pop();
-                  controller.clear();
-                },
-                child: const Text(
-                  'Dodaj',
-                  style: TextStyle(color: Colors.black),
+              child: const AutoSizeText(
+                'Coś poszło nie tak',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 72,
                 ),
               ),
-            ],
+            ),
           ),
         );
-      },
-      child: const Icon(Icons.note_alt),
-    ),
-    body: Container(
-      decoration: const BoxDecoration(
-        image: DecorationImage(
-          fit: BoxFit.fill,
-          image: AssetImage('assets/images/background.jpg'),
-        ),
-      ),
-      child: GridView.count(
-        crossAxisCount: 2,
-        children: [
-          for (final document in documents) ...[
-            Dismissible(
-              direction: DismissDirection.down,
-              key: ValueKey(document.id),
-              onDismissed: (direction) {
-                context.read<HomepageCubit>().delete(document.id);
-              },
-              child: CardContent(
-                document['note'],
+      }
+
+      if (state.isLoading == true) {
+        return const Center(child: CircularProgressIndicator());
+      }
+      return Scaffold(
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: Colors.brown[400],
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                backgroundColor: Colors.yellow[200],
+                title: const Text(
+                  'Dodaj notatkę',
+                  style: TextStyle(color: Colors.black),
+                ),
+                content: TextField(
+                  controller: controller,
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text(
+                      'Anuluj',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      context.read<HomepageCubit>().add(controller.text);
+                      Navigator.of(context).pop();
+                      controller.clear();
+                    },
+                    child: const Text(
+                      'Dodaj',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
+                ],
               ),
+            );
+          },
+          child: const Icon(Icons.note_alt),
+        ),
+        body: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              fit: BoxFit.fill,
+              image: AssetImage('assets/images/background.jpg'),
             ),
-          ]
-        ],
-      ),
-    ),
-        );
-      });
+          ),
+          child: GridView.count(
+            crossAxisCount: 2,
+            children: [
+              for (final itemModel in itemModels) ...[
+                Dismissible(
+                  direction: DismissDirection.down,
+                  key: ValueKey(itemModel.id),
+                  onDismissed: (direction) {
+                    context.read<HomepageCubit>().delete(itemModel.id);
+                  },
+                  child: CardContent(
+                    itemModel.note,
+                  ),
+                ),
+              ]
+            ],
+          ),
+        ),
+      );
+    });
   }
 }
 
@@ -114,6 +141,8 @@ class CardContent extends StatelessWidget {
       child: Center(
         child: AutoSizeText(
           note,
+          maxLines: 5,
+          overflow: TextOverflow.clip,
           textAlign: TextAlign.center,
           style: const TextStyle(fontSize: 72, fontStyle: FontStyle.italic),
         ),

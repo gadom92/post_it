@@ -1,14 +1,13 @@
 part of 'homepage_cubit.dart';
 
-@immutable
 class HomepageState {
   const HomepageState({
-    required this.documents,
+this.items = const [],
     required this.errorMessage,
     required this.isLoading,
   });
 
-  final List<QueryDocumentSnapshot<Object?>> documents;
+  final List<ItemModel> items;
   final String errorMessage;
   final bool isLoading;
 }
