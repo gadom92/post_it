@@ -131,8 +131,8 @@ class CardContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(25),
-      padding: const EdgeInsets.all(25),
+      margin: const EdgeInsets.all(15),
+      padding: const EdgeInsets.all(24),
       decoration: const BoxDecoration(
         image: DecorationImage(
           image: AssetImage('assets/images/post.jpg'),
@@ -140,11 +140,17 @@ class CardContent extends StatelessWidget {
       ),
       child: Center(
         child: AutoSizeText(
+          wrapWords: false,
           note,
-          maxLines: 5,
-          overflow: TextOverflow.clip,
+          minFontSize: 18,
+          maxFontSize: 64,
           textAlign: TextAlign.center,
-          style: const TextStyle(fontSize: 72, fontStyle: FontStyle.italic),
+          maxLines: 6,
+          style: const TextStyle(
+            fontSize: 48,
+            fontWeight: FontWeight.bold,
+            fontStyle: FontStyle.italic,
+          ),
         ),
       ),
     );
