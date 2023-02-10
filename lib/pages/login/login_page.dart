@@ -21,8 +21,9 @@ class LoginPage extends StatelessWidget {
         child: Center(
           child: Container(
             margin: const EdgeInsets.all(100),
-            decoration: const BoxDecoration(
-              image: DecorationImage(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(32),
+              image: const DecorationImage(
                 image: AssetImage(
                   'assets/images/post.jpg',
                 ),
@@ -35,11 +36,12 @@ class LoginPage extends StatelessWidget {
                 },
                 child: const AutoSizeText(
                   maxLines: 3,
+                  minFontSize: 36,
+                  maxFontSize: 96,
                   'Otwórz swoją tablicę',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.black,
-                    fontSize: 72,
                   ),
                 ),
               ),

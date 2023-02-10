@@ -145,7 +145,7 @@ class CardContent extends StatelessWidget {
           minFontSize: 18,
           maxFontSize: 64,
           textAlign: TextAlign.center,
-          maxLines: 6,
+          maxLines: 5,
           style: const TextStyle(
             fontSize: 48,
             fontWeight: FontWeight.bold,

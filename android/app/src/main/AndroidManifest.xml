@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.mateuszgadomski.post_it">
    <application
-        android:label="post_it"
+        android:label="Post It"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity
